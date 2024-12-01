@@ -7,6 +7,34 @@ from .serializer import *
 from .models import *
 
 
+class MevaTuriApiView(APIView):
+    def get(self, request):
+        mevaturi = MevaTuri.objects.all()
+        serializer = MevaTuriSerializer(mevaturi, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = MevaTuriSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"success": True, "message": "Ma'lumot qo'shildi"})
+        return Response(serializer.errors)
+
+
+class BogApiView(APIView):
+    def get(self, request):
+        bog = Bog.objects.all()
+        serializer = BogSerializer(bog, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = BogSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"success": True, "message": "Ma'lumot qo'shildi"})
+        return Response(serializer.errors)
+
+
 class XaridorApiView(APIView):
     def get(self, request):
         xaridor = Xaridor.objects.all()
@@ -27,7 +55,7 @@ class XaridorApiView(APIView):
 class XaridorEditApiView(APIView):
     def get(self, request, pk):
         xaridor = get_object_or_404(Xaridor, id=pk)
-        serializer = XaridorSerializer(xaridor, data=request.data)
+        serializer = XaridorSerializer(xaridor)
         return Response(serializer.data)
 
     @swagger_auto_schema(
@@ -38,13 +66,13 @@ class XaridorEditApiView(APIView):
         serializer = XaridorSerializer(xaridor, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({"messagee": "ma'lumot tahrirlandi"})
+            return Response({"success": True, "messagee": "Ma'lumot tahrirlandi"})
         return Response(serializer.errors)
 
     def delete(self, request, pk):
         xaridor = get_object_or_404(Xaridor, id=pk)
         xaridor.delete()
-        return Response({"success": "Ma'lumot o'chirildi"})
+        return Response({"success": True, "message": "Ma'lumot o'chirildi"})
 
 
 class SotuvApiView(APIView):

@@ -1,5 +1,18 @@
 from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 from .models import *
+
+
+class MevaTuriSerializer(ModelSerializer):
+    class Meta:
+        model = MevaTuri
+        fields = "__all__"
+
+
+class BogSerializer(ModelSerializer):
+    class Meta:
+        model = Bog
+        fields = "__all__"
 
 
 class XaridorSerializer(ModelSerializer):
